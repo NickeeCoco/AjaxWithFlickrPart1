@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Flickr</title>
+    <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+	<script>        
+	$(document).ready(function() {
+        $("form").on("submit", (function(e){
+            e.preventDefault();
+            
+            let tag = $("#tag").val();
+            let url = "http://api.flickr.com/services/feeds/photos_public.gne?" + "format=json&jsoncallback=?&tags=" + tag;
+
+            $.getJSON(url, function(data){
+                let html = "";
+                $.each(data.items, function(i, item) {
+                    html += "<h2>" + item.title + "</h2>";
+                    html += "<img src=" + item.media.m + ">";
+                    html += "<p></p>";
+                });
+
+                $("#results").html(html);
+            });
+        }))
+    })
+    
+    </script>
+</head>
+
+<body>
+<main>
+	<h1>Find Flickr pictures</h1>
+	<form>
+		<label for="tag">Tag:</label>
+		<input type="text" id="tag" name="tag" placeholder="tag" />
+		<input type="submit" id="submit" value="Display pictures"/>
+	</form>
+	<div id="results"></div>
+</main>
+</body>
+</html>
